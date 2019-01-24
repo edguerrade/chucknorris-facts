@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/chucknorris-facts/precache-manifest.068cc4faf0cebae1c4dd687e9517b783.js"
+  "/chucknorris-facts/precache-manifest.ef8b65ed93f9cb6faa68f2d0c0f09c6b.js"
 );
 
 workbox.clientsClaim();
