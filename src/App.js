@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from 'react';
-import ReactModal from 'react-modal';
-
-import ChuckNorrisJokesProvider from './ChuckNorrisJokesProvider';
-import CategoriesFilter from './CategoriesFilter';
-import JokeList from './JokeList';
-ReactModal.setAppElement('#root');
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Home from './Home';
+import JokeRoute from './JokeRoute';
+import JokeView from './JokeView';
+import NotFound from './NotFound';
 
 /* I am guessing you might be familiar with Chuck Norris, and maybe as well Chuck Norris jokes!
 There is a free api: https://api.chucknorris.io/
@@ -24,85 +23,14 @@ The requirements are:
 /**
  * @author eguerra
  */
-class App extends Component {
-  state = {
-    showModal: false,
-    contentLabel: undefined
-  };
-
-  _handleOpenModal = joke => {
-    window.location.hash = `#${joke.id}`
-    window.onpopstate = () => {
-      this._handleCloseModal();
-    };
-    this.setState({
-      showModal: true,
-      contentLabel: joke.value
-    });
-  };
-
-  _locationBack = () => {
-    window.history.back();
-  }
-
-  _handleCloseModal = () => {
-    this.setState({
-      showModal: false
-    });
-  };
-
-  render() {
-    return (
-      <Fragment>
-        <ChuckNorrisJokesProvider>
-          {({
-            getCategory,
-            setCategory,
-            getCategories,
-            getJokes,
-            setJokes,
-            getRandomJoke
-          }) => (
-            <main>
-              <CategoriesFilter
-                getCategories={getCategories}
-                handleChange={setCategory}
-                selectedOption={getCategory()}
-              />
-              <JokeList
-                list={getJokes()}
-                onChangeList={setJokes}
-                getJoke={getRandomJoke}
-              >
-                {joke => {
-                  return (
-                    <div
-                      key={`joke-${joke.id}`}
-                      onClick={() =>
-                        joke.id !== 0 && this._handleOpenModal(joke)
-                      }
-                    >
-                      {joke.value}
-                    </div>
-                  );
-                }}
-              </JokeList>
-            </main>
-          )}
-        </ChuckNorrisJokesProvider>
-        <ReactModal
-          shouldCloseOnOverlayClick
-          isOpen={this.state.showModal}
-          onRequestClose={this._locationBack}
-          contentLabel={this.state.contentLabel}
-        >
-          <h2>Fact</h2>
-          <p>{this.state.contentLabel}</p>
-          <button onClick={this._locationBack}>Close Modal</button>
-        </ReactModal>
-      </Fragment>
-    );
-  }
-}
+const App = () => (
+  <Router>
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <JokeRoute exact path="/joke/:id" component={JokeView} />
+      <Route component={NotFound} />
+    </Switch>
+  </Router>
+);
 
 export default App;
