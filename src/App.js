@@ -24,7 +24,7 @@ The requirements are:
  * @author eguerra
  */
 const App = () => (
-  <Router>
+  <Router basename={process.env.PUBLIC_URL}>
     <Switch>
       <Route exact path="/" component={Home} />
       <JokeRoute exact path="/joke/:id" component={JokeView} />
